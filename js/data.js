@@ -9,11 +9,19 @@ window.addEventListener("keyup", (event) => {
 const gameData = {
     size: 64,
     gravity: -0.01,
-    mapWidth: 5,
-    mapHeight: 2
+    mapWidth: 10,
+    mapHeight: 10
 };
 
 const mapData = [
-    ".....",
-    "#####"
+    "#........#",
+    "#........#",
+    "#........#",
+    "#........#",
+    "#........#",
+    "#........#",
+    "#........#",
+    "##.......#",
+    "#........#",
+    "##########"
 ];

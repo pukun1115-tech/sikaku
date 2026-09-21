@@ -178,13 +178,14 @@ function drawMap(canvas, ctx) {
         for (let x = 0; x < gameData.mapWidth; x++) {
             if (mapData[y][x] === "#") {
                 const worldY = gameData.mapHeight - y - 1;
-                ctx.fillStyle = "rgba(255, 255, 255, 1)";
-                ctx.fillRect(originX + Math.floor((x - player.x - (player.xSize / 2)) * gameData.size), originY - Math.floor((worldY - player.y - (player.ySize / 2)) * gameData.size), gameData.size, -gameData.size);
+                ctx.strokeStyle = "rgba(255, 255, 255, 1)";
+                ctx.lineWidth = gameData.size / 32;
+                ctx.strokeRect(originX + Math.floor((x - player.x - (player.xSize / 2)) * gameData.size), originY - Math.floor((worldY - player.y - (player.ySize / 2)) * gameData.size), gameData.size, -gameData.size);
             }
         }
     }
 }
 
 const game = new Game("canvas");
-const player = new Player(2, 5);
+const player = new Player(1.25, 1.25);
 game.start();
