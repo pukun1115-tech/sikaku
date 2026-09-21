@@ -44,14 +44,16 @@ class Player {
         this.y = y;
         this.xSize = 0.5;
         this.ySize = 0.5;
-        this.velocityY = 0;
-        this.velocityX = 0;
-        this.onGround = false;
-        this.onWall = false;
-        this.onCeiling = false;
         this.jumpPower = 0.2;
         this.movePower = 0.005;
         this.maxVelocityX = 0.1;
+        this.velocityY = 0;
+        this.velocityX = 0;
+
+        this.onGround = false;
+        this.onWall = false;
+        this.onCeiling = false;
+        this.isCrouching = false;
     }
 
     draw(canvas, ctx) {
@@ -68,6 +70,12 @@ class Player {
         this.onWall = this.checkCollision(this.x, this.y + 0.002);
         this.onCeiling = this.checkCollision(this.x - 0.002, this.y) || this.checkCollision(this.x + 0.02, this.y);
         this.onGround = this.checkCollision(this.x, this.y - 0.002);
+        this.isCrouching = keys["KeyS"] || keys["ArrowDown"];
+        if (this.isCrouching) {
+            this.ySize = 0.25;
+        } else {
+            this.ySize = 0.5;
+        }
         
         this.updateHorizontalVelocity();
         this.updateVerticalVelocity();
@@ -82,17 +90,23 @@ class Player {
         let friction;
         let movePower;
         if (this.onGround) {
-            friction = 0.005;
+            friction = 0.01;
             movePower = this.movePower;
         } else {
-            friction = 0.001;
+            friction = 0.005;
             movePower = this.movePower * 0.2;
+        }
+        let maxVelocityX;
+        if (!this.isCrouching) {
+            maxVelocityX = this.maxVelocityX;
+        } else {
+            maxVelocityX = this.maxVelocityX * 0.4;
         }
 
         if (left && !right) {
-            this.velocityX = Math.max(this.velocityX - movePower, -this.maxVelocityX);
+            this.velocityX = Math.max(this.velocityX - movePower, -maxVelocityX);
         } else if (!left && right) {
-            this.velocityX = Math.min(this.velocityX + movePower, this.maxVelocityX);
+            this.velocityX = Math.min(this.velocityX + movePower, maxVelocityX);
         } else {
             if (Math.abs(this.velocityX) < friction) {
                 this.velocityX = 0;
